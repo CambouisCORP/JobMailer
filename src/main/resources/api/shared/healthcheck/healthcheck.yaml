@@ -1,0 +1,13 @@
+get:
+  tags:
+    - default
+  summary: Get Heathcheck
+  description: Get Heathcheck information
+  operationId: get
+  responses:
+    '200':
+      description: success
+      content:
+        application/json:
+          schema:
+            $ref: "./healthcheckDTO.yml"
