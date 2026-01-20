@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: job-mailer-ingress
+  namespace: cambouis-prod
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: job-mailer.cambouis.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: job-mailer-backend
+                port:
+                  number: 8000
+  tls:
+    - hosts:
+        - job-mailer.cambouis.app
+      secretName: job-mailer-tls
