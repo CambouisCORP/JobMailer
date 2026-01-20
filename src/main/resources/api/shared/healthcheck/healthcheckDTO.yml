@@ -1,0 +1,12 @@
+type: object
+properties:
+  status:
+    type: string
+    example: "OK"
+  timestamp:
+    type: string
+    format: date-time
+  version:
+    type: string
+required:
+  - status
