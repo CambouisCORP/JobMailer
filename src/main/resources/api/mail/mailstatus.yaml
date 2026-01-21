@@ -1,0 +1,13 @@
+get:
+  tags:
+    - mail
+  summary: connexion status
+  description: get mail account connexion status
+  operationId: getStatus
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "./mailstatusDTO.yaml"
