@@ -17,7 +17,7 @@
     <artifactId>JobMailer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>JobMailer</name>
-    <description>ça envoie, ça relance, ça répond</description>
+    <description>It sends, it follows up, it responds</description>
 
     <properties>
         <java.version>21</java.version>
@@ -75,6 +75,18 @@
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.0.0</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.2.0</version>
         </dependency>
 
     </dependencies>
