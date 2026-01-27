@@ -1,0 +1,19 @@
+type: object
+properties:
+  messageId:
+    type: integer
+    example: 12345
+  subject:
+    type: string
+    example: Meeting Reminder
+  sender:
+    type: string
+    format: email
+    example: example@example.fr
+  sentDate:
+    type: string
+    format: date-time
+    example: 2024-06-15T10:30:00Z
+  isRead:
+    type: boolean
+    example: false

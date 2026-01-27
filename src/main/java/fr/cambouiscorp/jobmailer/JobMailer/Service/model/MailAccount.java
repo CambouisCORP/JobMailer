@@ -10,6 +10,7 @@ import java.util.UUID;
 public class MailAccount {
     private final UUID id;
     private final String email;
-    private final MailProviderType providerType;
+    private final MailProvider mailProvider;
+    private final String password;
 
 }

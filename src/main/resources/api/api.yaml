@@ -13,3 +13,9 @@ paths:
       $ref: './shared/healthcheck/healthcheck.yaml'
     /mail/status:
       $ref: "./mail/mailstatus.yaml"
+
+    /mail/send:
+      $ref: "./mail/send.yaml"
+
+    /mail/inbox:
+      $ref: "./mail/inbox.yaml"
