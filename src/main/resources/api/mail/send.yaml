@@ -1,0 +1,44 @@
+post:
+  tags:
+    - mail
+  summary: send mail
+  description: send mail to a list of recipients
+  operationId: sendMail
+  requestBody:
+      description: mail to send
+      required: true
+      content:
+        application/json:
+            schema:
+              $ref: "./postFullDTO.yaml"
+  responses:
+    '200':
+      description: Mail sent successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Mail sent successfully
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Invalid email address
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Failed to send mail

@@ -1,0 +1,15 @@
+get:
+  tags:
+    - mail
+  summary: inbox mails
+  description: get mails from inbox
+  operationId: getInbox
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./postLightDTO.yaml"

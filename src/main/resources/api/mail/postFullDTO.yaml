@@ -1,0 +1,19 @@
+type: object
+required:
+  - subject
+  - body
+  - sender
+  - recipients
+properties:
+    subject:
+        type: string
+    body:
+        type: string
+    sender:
+        type: string
+        format: email
+    recipients:
+        type: array
+        items:
+            type: string
+            format: email
