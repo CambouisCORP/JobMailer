@@ -1,4 +1,4 @@
-package fr.cambouiscorp.jobmailer.JobMailer.shared;
+package fr.cambouiscorp.jobmailer.JobMailer.shared.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

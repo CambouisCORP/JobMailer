@@ -1,46 +1,21 @@
-package fr.cambouiscorp.jobmailer.JobMailer.Service.Adapter;
+package fr.cambouiscorp.jobmailer.JobMailer.mailaccount.infra.adapter.imap;
 
-import fr.cambouiscorp.jobmailer.JobMailer.Service.Factory.MailSenderFactory;
-import fr.cambouiscorp.jobmailer.JobMailer.Service.model.EmailSummary;
-import fr.cambouiscorp.jobmailer.JobMailer.Service.model.MailAccount;
-import fr.cambouiscorp.jobmailer.JobMailer.Service.port.MailPort;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.dto.EmailSummary;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.dto.ReadDTO;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.port.MailReaderPort;
 import jakarta.mail.*;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
-@Slf4j
-@RequiredArgsConstructor
-public abstract class AbstractMailAdapter implements MailPort {
-
-    protected final MailSenderFactory mailSenderFactory;
+@Service
+public class ImapMailReaderAdapter implements MailReaderPort {
 
     @Override
-    public void send(MailAccount account, String to, String subject, String body) {
-
-        JavaMailSender mailSender = mailSenderFactory.create(account);
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(account.getEmail());
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-
-        mailSender.send(message);
-        log.debug("Sent mail email from {} to {} with subject '{}'", account.getEmail(), to, subject);
-    }
-
-
-
-    @Override
-    public List<EmailSummary> readInbox(MailAccount settings, int page, int size) {
+    public List<EmailSummary> apply(ReadDTO dto) {
         Store store = null;
         Folder inbox = null;
         List<EmailSummary> summaries = new ArrayList<>();
@@ -48,13 +23,13 @@ public abstract class AbstractMailAdapter implements MailPort {
         try {
             Properties props = new Properties();
             props.put("mail.store.protocol", "imaps");
-            props.put("mail.imaps.host", settings.getMailProvider().getImapHost());
-            props.put("mail.imaps.port", String.valueOf(settings.getMailProvider().getImapPort()));
+            props.put("mail.imaps.host", dto.getMailAccount().getMailProvider().getImapHost());
+            props.put("mail.imaps.port", String.valueOf(dto.getMailAccount().getMailProvider().getImapPort()));
             props.put("mail.imaps.ssl.enable", "true");
 
             Session session = Session.getInstance(props);
             store = session.getStore("imaps");
-            store.connect(settings.getMailProvider().getImapHost(), settings.getEmail(), settings.getPassword());
+            store.connect(dto.getMailAccount().getMailProvider().getImapHost(), dto.getMailAccount().getEmail(), dto.getMailAccount().getPassword());
 
             inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
@@ -62,8 +37,8 @@ public abstract class AbstractMailAdapter implements MailPort {
             int totalMessages = inbox.getMessageCount();
             if (totalMessages == 0) return Collections.emptyList();
 
-            int end = totalMessages - (page * size);
-            int start = end - size + 1;
+            int end = totalMessages - (dto.getPage() * dto.getSize());
+            int start = end - dto.getSize() + 1;
 
             if (end < 1) return Collections.emptyList();
             if (start < 1) start = 1;
@@ -84,7 +59,6 @@ public abstract class AbstractMailAdapter implements MailPort {
                         msg.isSet(Flags.Flag.SEEN)
                 ));
             }
-
             Collections.reverse(summaries);
             return summaries;
 
@@ -95,9 +69,8 @@ public abstract class AbstractMailAdapter implements MailPort {
                 if (inbox != null && inbox.isOpen()) inbox.close(false);
                 if (store != null && store.isConnected()) store.close();
             } catch (MessagingException e) {
-                log.error("Error closing mail resources", e);
+                //log.error("Error closing mail resources", e);
             }
         }
     }
-
 }
