@@ -2,7 +2,7 @@ package fr.cambouiscorp.jobmailer.JobMailer.mailaccount.infra.rest;
 
 import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.dto.EmailSummary;
 import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.entity.MailAccount;
-import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.mapper.AccoundToReadDTOMapper;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.mapper.AccountToReadDTOMapper;
 import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.mapper.PostFullDTOToSendDTOMapper;
 import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.port.MailReaderPort;
 import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.port.MailSenderPort;
@@ -26,7 +26,7 @@ public class MailController implements MailApi {
 
     private final MailReaderPort mailReaderPort;
     private final MailSenderPort mailSenderPort;
-    private final AccoundToReadDTOMapper accountToReadDTOMapper;
+    private final AccountToReadDTOMapper accountToReadDTOMapper;
     private final PostFullDTOToSendDTOMapper postFullDTOToSendDTOMapper;
 
 
