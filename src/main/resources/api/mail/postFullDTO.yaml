@@ -2,18 +2,12 @@ type: object
 required:
   - subject
   - body
-  - sender
-  - recipients
+  - to
 properties:
     subject:
         type: string
     body:
         type: string
-    sender:
+    to:
         type: string
         format: email
-    recipients:
-        type: array
-        items:
-            type: string
-            format: email

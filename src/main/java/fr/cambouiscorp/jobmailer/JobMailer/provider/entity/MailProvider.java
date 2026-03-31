@@ -1,4 +1,4 @@
-package fr.cambouiscorp.jobmailer.JobMailer.Service.model;
+package fr.cambouiscorp.jobmailer.JobMailer.provider.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

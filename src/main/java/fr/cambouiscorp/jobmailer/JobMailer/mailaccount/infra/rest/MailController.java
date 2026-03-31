@@ -1,9 +1,12 @@
-package fr.cambouiscorp.jobmailer.JobMailer.Controller;
+package fr.cambouiscorp.jobmailer.JobMailer.mailaccount.infra.rest;
 
-import fr.cambouiscorp.jobmailer.JobMailer.Service.model.EmailSummary;
-import fr.cambouiscorp.jobmailer.JobMailer.Service.model.MailAccount;
-import fr.cambouiscorp.jobmailer.JobMailer.Service.model.MailProvider;
-import fr.cambouiscorp.jobmailer.JobMailer.Service.port.MailPort;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.dto.EmailSummary;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.entity.MailAccount;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.mapper.AccountToReadDTOMapper;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.mapper.PostFullDTOToSendDTOMapper;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.port.MailReaderPort;
+import fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.port.MailSenderPort;
+import fr.cambouiscorp.jobmailer.JobMailer.provider.entity.MailProvider;
 import fr.cambouiscorp.jobmailer.api.MailApi;
 import fr.cambouiscorp.jobmailer.model.MailstatusDTO;
 import fr.cambouiscorp.jobmailer.model.PostFullDTO;
@@ -21,7 +24,11 @@ import java.util.UUID;
 @RestController
 public class MailController implements MailApi {
 
-    private final MailPort mailPort;
+    private final MailReaderPort mailReaderPort;
+    private final MailSenderPort mailSenderPort;
+    private final AccountToReadDTOMapper accountToReadDTOMapper;
+    private final PostFullDTOToSendDTOMapper postFullDTOToSendDTOMapper;
+
 
     @Value("${USER_MAIL}")
     private String username;
@@ -37,18 +44,14 @@ public class MailController implements MailApi {
                 MailProvider.GMAIL,
                 password
         );
-
-        List<EmailSummary> emails = mailPort.readInbox(account, 0, 20);
-        System.out.println(emails);
-
+         List<EmailSummary> emials = mailReaderPort.apply(accountToReadDTOMapper.apply(account,0,20));
+        System.out.println("Fetched " + emials.size() + " emails.");
         return null;
     }
 
     @Override
     public MailstatusDTO getStatus() {
-        MailstatusDTO mailstatusDTO = new MailstatusDTO();
-        mailstatusDTO.setStatus("Mail service is running");
-        return mailstatusDTO;
+        return null;
     }
 
     @Override
@@ -59,9 +62,7 @@ public class MailController implements MailApi {
                 MailProvider.GMAIL,
                 password
         );
-        mailPort.send(account, postFullDTO.getSender(),  postFullDTO.getSubject(), postFullDTO.getBody());
-
+        mailSenderPort.apply(postFullDTOToSendDTOMapper.apply(postFullDTO, account));
         return null;
     }
-
 }

@@ -1,4 +1,4 @@
-package fr.cambouiscorp.jobmailer.JobMailer.Service.model;
+package fr.cambouiscorp.jobmailer.JobMailer.mailaccount.domain.dto;
 
 import java.util.Date;
 
